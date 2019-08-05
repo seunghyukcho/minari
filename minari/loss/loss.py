@@ -25,3 +25,12 @@ class RMSELoss(Loss):
     def compute_loss(self, predictions, targets):
         self.loss = torch.sqrt(self.criterion(predictions, targets))
         return self.loss
+
+
+class L1Loss(Loss):
+    def __init__(self):
+        super(L1Loss, self).__init__(criterion=torch.nn.L1Loss())
+
+    def compute_loss(self, predictions, targets):
+        self.loss = self.criterion(predictions, targets)
+        return self.loss

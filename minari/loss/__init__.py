@@ -1,1 +1,2 @@
-from .loss import Loss, RMSELoss
+from .loss import RMSELoss, L1Loss
+

@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 
 class SolarDataSet(Dataset):
     def __init__(self, path, start_date=None, end_date=None, pid=None):
-        # super(SolarDataSet, self).__init__()
+        super(SolarDataSet, self).__init__()
         columns_title = ['power', 'time', 'pid', 'date', 'daylight', 'groundtemp', 'humidity',
                          'latitude', 'longitude', 'sid', 'precip', 'radiation',
                          'temperature', 'winddir', 'windspeed']
@@ -42,7 +42,7 @@ class SolarDataSet(Dataset):
         df['month'] = (df['date'] % 10000 - df['date'] % 100) / 100
         df['day'] = df['date'] % 100
 
-        ret = df.drop(columns=['date', 'sid', 'pid', 'daylight', 'winddir', 'windspeed'])
+        ret = df.drop(columns=['date', 'sid', 'pid', 'daylight', 'precip', 'radiation', 'winddir', 'windspeed'])
 
         ret['year'] = ret['year'] / 2100
         ret['month'] = ret['month'] / 12
@@ -53,8 +53,6 @@ class SolarDataSet(Dataset):
         ret['longitude'] = (ret['longitude'] + 180) / 360
 
         ret['humidity'] = ret['humidity'] / 100
-        ret['precip'] = ret['precip'] / 100
-        ret['radiation'] = ret['radiation'] / 10
         ret['temperature'] = (ret['temperature'] + 273) / 373
 
         return ret
