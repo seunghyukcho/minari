@@ -2,7 +2,7 @@ import logging
 import argparse
 from minari.trainer import Trainer
 from minari.dataset import SolarDataSet
-from minari.loss import RMSELoss, L1Loss
+from minari.loss import MAELoss
 from minari.models import SimpleNetwork
 
 parser = argparse.ArgumentParser()
@@ -30,6 +30,6 @@ for idx in pid_list:
 dataset = SolarDataSet(args.dataset, pid=pid)
 model = SimpleNetwork(dataset.x_data.shape[1])
 
-trainer = Trainer(loss=L1Loss())
+trainer = Trainer(loss=MAELoss())
 trainer.train(dataset=dataset, model=model, output_dir=output_path,
               file_name=model_name, epoch_size=epoch_size, learning_rate=lr)

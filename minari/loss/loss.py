@@ -27,10 +27,23 @@ class RMSELoss(Loss):
         return self.loss
 
 
-class L1Loss(Loss):
+class MAELoss(Loss):
     def __init__(self):
-        super(L1Loss, self).__init__(criterion=torch.nn.L1Loss())
+        super(MAELoss, self).__init__(criterion=torch.nn.L1Loss())
 
     def compute_loss(self, predictions, targets):
         self.loss = self.criterion(predictions, targets)
         return self.loss
+
+
+class NMAELoss(Loss):
+    def __init__(self):
+        super(NMAELoss, self).__init__(criterion=torch.nn.L1Loss())
+
+    def compute_loss(self, predictions, targets):
+        max_rate = torch.max(targets).item()
+        min_rate = torch.min(targets).item()
+
+        self.loss = self.criterion(predictions, targets)
+        self.loss.data = self.loss.data / (max_rate - min_rate)
+        
