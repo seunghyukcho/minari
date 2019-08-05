@@ -3,7 +3,7 @@ import torch
 import matplotlib.pyplot as plt
 from datetime import datetime
 from minari.evaluator import Predictor
-from minari.loss import RMSELoss, L1Loss
+from minari.loss import MAELoss
 from minari.dataset import SolarDataSet
 
 parser = argparse.ArgumentParser()
@@ -28,7 +28,7 @@ for idx in pid_list:
 
 dataset = SolarDataSet('../data/train.csv', start_date=start_date, end_date=end_date, pid=pid)
 device = torch.device('cpu')
-predictor = Predictor(dataset, L1Loss(), device)
+predictor = Predictor(dataset, MAELoss(), device)
 
 model = torch.load(args.model, map_location='cpu')
 model.eval()
