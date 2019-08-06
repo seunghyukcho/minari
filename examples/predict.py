@@ -6,20 +6,25 @@ from minari.evaluator import Predictor
 from minari.loss import MAELoss
 from minari.dataset import SolarDataSet
 
+
+def parse_datestring(datestr):
+    if datestr:
+        datestr = datetime.strptime(datestr, '%Y-%m-%d')
+        datestr = datestr.year * 10000 + datestr.month * 100 + datestr.day
+
+    return datestr
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', help='Path to the model which you are going to test.', default='../model/test.pt')
 parser.add_argument('--pid', help='Plant id that you are going to test.', type=list, default=[['8']], nargs='*')
-parser.add_argument('--start_day', help='Start date that you are going to test. format is YYYY-MM-DD', default='2018-06-15')
+parser.add_argument('--start_date', help='Start date that you are going to test. format is YYYY-MM-DD', default='2018-06-15')
 parser.add_argument('--plot', help='Flag to decide plot the results', action='store_true')
-parser.add_argument('--end_day', help='End date that you are going to test. format is YYYY-MM-DD', default=None)
+parser.add_argument('--end_date', help='End date that you are going to test. format is YYYY-MM-DD', default=None)
 args = parser.parse_args()
 
-start_date = datetime.strptime(args.start_day, '%Y-%m-%d')
-start_date = start_date.year * 10000 + start_date.month * 100 + start_date.day
-end_date = args.end_day
-if end_date:
-    end_date = datetime.strptime(args.end_day, '%Y-%m-%d')
-    end_date = end_date.year * 10000 + end_date.month * 100 + end_date.day
+start_date = parse_datestring(args.start_date)
+end_date = parse_datestring(args.end_date)
 
 pid = []
 pid_list = args.pid
