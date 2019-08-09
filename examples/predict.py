@@ -1,10 +1,12 @@
 import argparse
-import torch
-import matplotlib.pyplot as plt
 from datetime import datetime
-from minari.evaluator import Predictor, TwoLevelPredictor
+
+import matplotlib.pyplot as plt
+import torch
+
+from minari.dataset import TwoLevelDataSet
+from minari.evaluator import TwoLevelPredictor
 from minari.loss import MAELoss
-from minari.dataset import SolarDataSet, TwoLevelDataSet
 
 
 def parse_datestring(datestr):
@@ -44,7 +46,7 @@ result = result.detach().numpy()
 print('Loss: ', loss.data)
 
 if args.plot:
-    plt.plot(dataset.x1_data[:, [0]], dataset.y_data, 'r.', label='Original Data')
-    plt.plot(dataset.x1_data[:, [0]], result, 'b.', label='Prediction')
+    plt.plot(dataset.x_axis, dataset.y_data, 'r.', label='Original Data')
+    plt.plot(dataset.x_axis, result, 'b.', label='Prediction')
     plt.legend(loc='best')
     plt.show()

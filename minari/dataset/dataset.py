@@ -45,6 +45,7 @@ class SolarDataSet(Dataset):
         df['year'] = (df['date'] - df['date'] % 10000) / 10000
         df['month'] = (df['date'] % 10000 - df['date'] % 100) / 100
         df['day'] = df['date'] % 100
+        self.x_axis = np.array(df['date'] * 10000 + df['time'], dtype='int')
 
         ret = df.drop(columns=['date', 'sid', 'pid', 'daylight', 'precip', 'radiation', 'winddir', 'windspeed'])
 
