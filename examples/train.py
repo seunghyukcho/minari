@@ -1,10 +1,11 @@
-import logging
 import argparse
+import logging
 from datetime import datetime
-from minari.trainer import Trainer, TwoLevelTrainer
+
 from minari.dataset import SolarDataSet, TwoLevelDataSet
 from minari.loss import MAELoss
 from minari.models import SimpleNetwork, TwoLevelNetwork
+from minari.trainer import Trainer, TwoLevelTrainer
 
 
 def parse_datestring(datestr):
@@ -25,6 +26,7 @@ parser.add_argument('--batch', help='Batch size', default='64')
 parser.add_argument('--start_date', help='Start date that you are going to train. format is YYYY-MM-DD', default=None)
 parser.add_argument('--end_date', help='End date that you are going to train. format is YYYY-MM-DD', default=None)
 parser.add_argument('--dataset', help='Path to the dataset file going to use in training.', default='../data/train.csv')
+parser.add_argument('--mode', help='Select your model mode. 1: one level, 2: two level', default=1)
 args = parser.parse_args()
 
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
@@ -33,6 +35,7 @@ model_name = args.model
 lr = float(args.lr)
 epoch_size = int(args.epoch)
 batch_size = int(args.batch)
+mode = int(args.mode)
 
 start_date = parse_datestring(args.start_date)
 end_date = parse_datestring(args.end_date)
@@ -42,9 +45,14 @@ pid_list = args.pid
 for idx in pid_list:
     pid.append(int(idx[0]))
 
-dataset = TwoLevelDataSet(args.dataset, pid=pid, start_date=start_date, end_date=end_date)
-model = TwoLevelNetwork(dataset.x1_data.shape[1], dataset.x2_data.shape[1])
+dataset = SolarDataSet(args.dataset, pid=pid, start_date=start_date, end_date=end_date)
+model = SimpleNetwork(dataset.x_data.shape[1])
+trainer = Trainer(loss=MAELoss())
 
-trainer = TwoLevelTrainer(loss=MAELoss())
+if mode is 2:
+    dataset = TwoLevelDataSet(args.dataset, pid=pid, start_date=start_date, end_date=end_date)
+    model = TwoLevelNetwork(dataset.x1_data.shape[1], dataset.x2_data.shape[1])
+    trainer = TwoLevelTrainer(loss=MAELoss())
+
 trainer.train(dataset=dataset, model=model, output_dir=output_path,
               file_name=model_name, epoch_size=epoch_size, learning_rate=lr)

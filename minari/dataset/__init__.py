@@ -1,2 +1,1 @@
-from .dataset import SolarDataSet
-from .two_level_dataset import TwoLevelDataSet
+from .dataset import SolarDataSet, TwoLevelDataSet
