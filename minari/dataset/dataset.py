@@ -16,18 +16,22 @@ class SolarDataSet(Dataset):
         df = pd.read_csv(path)
         df = df.reindex(columns=columns_title)
         df = self.normalize(df)
+        print(df.columns)
 
         raw_data = np.array(df.values, dtype='f')
 
         self.len = raw_data.shape[0]
-        self.x_data = raw_data[:, 1:]
-        self.y_data = raw_data[:, [0]]
+        self.set_data(raw_data)
 
     def __getitem__(self, index):
         return self.x_data[index], self.y_data[index]
 
     def __len__(self):
         return self.len
+
+    def set_data(self, data):
+        self.x_data = data[:, 1:]
+        self.y_data = data[:, [0]]
 
     def normalize(self, df):
         if self.pid:

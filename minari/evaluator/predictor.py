@@ -9,10 +9,10 @@ class Predictor(object):
         self.device = device
 
     def predict(self, model):
-        x_datas, y_datas = self.dataset.x_data, self.dataset.y_data
-        x_datas, y_datas = Variable(torch.tensor(x_datas).to(self.device)), Variable(torch.tensor(y_datas).to(self.device))
+        x_data, y_data = self.dataset.x_data, self.dataset.y_data
+        x_data, y_data = Variable(torch.tensor(x_data).to(self.device)), Variable(torch.tensor(y_data).to(self.device))
 
-        outputs = model(x_datas)
-        result = self.loss.compute_loss(outputs, y_datas)
+        outputs = model(x_data)
+        result = self.loss.compute_loss(outputs, y_data)
 
         return outputs, result

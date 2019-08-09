@@ -1,10 +1,10 @@
 import logging
 import argparse
 from datetime import datetime
-from minari.trainer import Trainer
-from minari.dataset import SolarDataSet
+from minari.trainer import Trainer, TwoLevelTrainer
+from minari.dataset import SolarDataSet, TwoLevelDataSet
 from minari.loss import MAELoss
-from minari.models import SimpleNetwork
+from minari.models import SimpleNetwork, TwoLevelNetwork
 
 
 def parse_datestring(datestr):
@@ -42,9 +42,9 @@ pid_list = args.pid
 for idx in pid_list:
     pid.append(int(idx[0]))
 
-dataset = SolarDataSet(args.dataset, pid=pid, start_date=start_date, end_date=end_date)
-model = SimpleNetwork(dataset.x_data.shape[1])
+dataset = TwoLevelDataSet(args.dataset, pid=pid, start_date=start_date, end_date=end_date)
+model = TwoLevelNetwork(dataset.x1_data.shape[1], dataset.x2_data.shape[1])
 
-trainer = Trainer(loss=MAELoss())
+trainer = TwoLevelTrainer(loss=MAELoss())
 trainer.train(dataset=dataset, model=model, output_dir=output_path,
               file_name=model_name, epoch_size=epoch_size, learning_rate=lr)

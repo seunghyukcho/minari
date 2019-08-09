@@ -13,6 +13,6 @@ class TwoLevelNetwork(nn.Module):
     def forward(self, x1, x2):
         x1 = torch_function.leaky_relu(self.fc1(x1))
         x2 = torch.cat((x1, x2), 1)
-        x2 = torch_funciton.leaky_relu(self.fc2(x2))
+        x2 = torch_function.leaky_relu(self.fc2(x2))
 
         return x2

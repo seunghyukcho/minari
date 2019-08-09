@@ -43,7 +43,7 @@ class Trainer(object):
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
         train_loader = DataLoader(dataset=dataset, batch_size=self.batch_size, shuffle=True, num_workers=0)
-        total_rows = dataset.x_data.shape[0]
+        total_rows = len(dataset)
         total_steps = (total_rows - 1) / self.batch_size + 1
 
         model = model.to(device)
