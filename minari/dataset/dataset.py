@@ -46,15 +46,12 @@ class SolarDataSet(Dataset):
         df['day'] = df['date'] % 100
         self.x_axis = np.array(df['date'] * 10000 + df['time'], dtype='int')
 
-        ret = df.drop(columns=['date', 'longitude', 'latitude', 'year', 'month', 'day', 'time', 'sid', 'pid', 'daylight', 'precip', 'winddir', 'windspeed'])
+        ret = df.drop(columns=['date', 'longitude', 'latitude', 'radiation', 'sid', 'pid', 'daylight', 'precip', 'winddir', 'windspeed'])
 
-        # ret['year'] = ret['year'] / 2100
-        # ret['month'] = ret['month'] / 12
-        # ret['day'] = ret['day'] / 31
-        # ret['time'] = ret['time'] / 2400
-
-        # ret['latitude'] = (ret['latitude'] + 90) / 180
-        # ret['longitude'] = (ret['longitude'] + 180) / 360
+        ret['year'] = ret['year'] / 2100
+        ret['month'] = ret['month'] / 12
+        ret['day'] = ret['day'] / 31
+        ret['time'] = ret['time'] / 2400
 
         ret['humidity'] = ret['humidity'] / 100
         ret['temperature'] = (ret['temperature'] + 273) / 373
