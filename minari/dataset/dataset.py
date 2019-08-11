@@ -46,7 +46,7 @@ class SolarDataSet(Dataset):
         df['day'] = df['date'] % 100
         self.x_axis = np.array(df['date'] * 10000 + df['time'], dtype='int')
 
-        ret = df.drop(columns=['date', 'longitude', 'latitude', 'radiation', 'sid', 'pid', 'daylight', 'precip', 'winddir', 'windspeed'])
+        ret = df.drop(columns=['date', 'longitude', 'latitude', 'radiation', 'sid', 'precip', 'pid', 'winddir', 'windspeed'])
 
         ret['year'] = ret['year'] / 2100
         ret['month'] = ret['month'] / 12
@@ -55,13 +55,14 @@ class SolarDataSet(Dataset):
 
         ret['humidity'] = ret['humidity'] / 100
         ret['temperature'] = (ret['temperature'] + 273) / 373
+        ret['groundtemp'] = (ret['groundtemp'] + 273) / 373
 
         return ret
 
 
 class TwoLevelDataSet(SolarDataSet):
     def set_data(self, data):
-        self.x1_data, self.x2_data = data[:, [1, 4, 5, 7, 8, 9]], data[:, [2, 3, 6]]
+        self.x1_data, self.x2_data = data[:, [1, 6, 7, 8]], data[:, [2, 3, 4, 5]]
         self.y_data = data[:, [0]]
 
     def __getitem__(self, item):
