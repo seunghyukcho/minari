@@ -67,3 +67,9 @@ optional arguments:
                         MM-DD
 ```
 Using plot option, you can see a graph of your prediction.
+```bash
+$ python predict.py --model ../model/tlnFW_200.pt --mode 2 --pid 8 --start_date '2019-07-01'
+```
+<p align="center">
+  <img src="https://github.com/shhj1998/minari/blob/master/screenshots/figure.png"/>
+</p>
